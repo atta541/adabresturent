@@ -1,0 +1,38 @@
+// const mongoose = require('mongoose');
+
+// const ItemsSchema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         required: true,
+//     },
+//     picture: {
+//         type: String,
+//         required: true,
+//         unique: true,
+//     },
+   
+// }, { timestamps: true });
+
+// module.exports = mongoose.model('Items', ItemsSchema);
+
+
+
+
+const mongoose = require('mongoose');
+
+const ItemsSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    picture: {
+        type: String,
+        required: true,
+    },
+    category: {  // ✅ Ensure this field is included and required
+        type: String,
+        required: true,
+    },
+}, { timestamps: true });
+
+module.exports = mongoose.model('Items', ItemsSchema);

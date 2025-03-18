@@ -39,7 +39,7 @@ const {
     updateProfile,
     getUserProfile
 
-} = require('../../controllers/user.controller');
+} = require('../../controllers/users/user.controller');
 const authMiddleware = require('./authMiddleware');
 
 const router = express.Router();

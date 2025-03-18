@@ -10,11 +10,11 @@ const authMiddleware = async (req, res, next) => {
         return res.status(401).json({ message: 'No token, authorization denied' });
     }
 
-    const token = authHeader.split(' ')[1]; // Extract the actual token
+    const token = authHeader.split(' ')[1]; 
 
     try {
         const decoded = jwt.verify(token, SECRET_KEY);
-        req.user = await User.findById(decoded.id).select('-password'); // Exclude password
+        req.user = await User.findById(decoded.id).select('-password'); 
         
         if (!req.user) {
             return res.status(404).json({ message: 'User not found' });
