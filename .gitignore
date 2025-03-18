@@ -1,0 +1,13 @@
+# Node.js dependencies
+adabBackend/node_modules
+adabBackend/.env
+
+# React Native dependencies
+adabmobile/node_modules
+adabmobile/.env
+android/.gradle
+ios/Pods
+
+# Logs
+*.log
+ 
