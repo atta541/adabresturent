@@ -1,50 +1,83 @@
-import React, { useEffect, useState } from "react";
-import { 
-  View, Text, ScrollView, TouchableOpacity, StyleSheet, 
-  ActivityIndicator, Image, 
-  
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Base_URL from "../../Base_URL";
 
+// Cache for API responses
+const apiCache = {};
 
 const SlidingMenu = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
- 
-  useEffect(() => {
-    fetch(`${Base_URL}/api/items`)
-      .then((response) => response.json()) 
-      .then((data) => {
-        setCategories(data);   
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error);
-        setLoading(false);
-      });
+
+  const fetchCategories = useCallback(async () => {
+    if (apiCache.categories) {
+      setCategories(apiCache.categories);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${Base_URL}/api/items`);
+      const data = await response.json();
+      setCategories(data);
+      apiCache.categories = data; // Cache the response
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      setLoading(false);
+    }
   }, []);
 
-  return ( 
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const handleCategoryPress = useCallback(
+    (category) => {
+      navigation.navigate("CategoryScreen", { category });
+    },
+    [navigation]
+  );
+
+  const renderCategory = useMemo(
+    () =>
+      ({ item }) =>
+        (
+          <TouchableOpacity
+            key={item._id}
+            style={styles.categoryButton}
+            activeOpacity={0.8}
+            onPress={() => handleCategoryPress(item.name)}
+          >
+            <Image source={{ uri: item.picture }} style={styles.categoryImage} />
+            <Text style={styles.categoryText}>{item.name}</Text>
+          </TouchableOpacity>
+        ),
+    [handleCategoryPress]
+  );
+
+  return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" color="#FF5733" />
       ) : (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
-          {categories.map((item) => (
-            <TouchableOpacity 
-              key={item._id} 
-              style={styles.categoryButton} 
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate("CategoryScreen", { category: item.name })}
-            >
-              <Image source={{ uri: item.picture }} style={styles.categoryImage} />
-              <Text style={styles.categoryText}>{item.name}</Text>
-            </TouchableOpacity>
-          ))}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}
+        >
+          {categories.map((item) => renderCategory({ item }))}
         </ScrollView>
-
       )}
     </View>
   );
@@ -63,8 +96,8 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   categoryImage: {
-    width: 80,  
-    height: 80, 
+    width: 80,
+    height: 80,
     borderRadius: 10,
   },
   categoryText: {

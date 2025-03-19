@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import React, { useContext } from 'react';
 import { UserDetailsContext } from '../context/UserDetailsContext';
-import Icons from 'react-native-vector-icons/MaterialIcons';
 
 const Avatar = () => {
     const { userDetails, loading } = useContext(UserDetailsContext);
@@ -12,11 +11,11 @@ const Avatar = () => {
 
     return (
         <View style={styles.container}>
-            {/* User name */}
-            <Text style={styles.text}>{userDetails?.name || 'User'}</Text>
+            {/* User Name on the Left */}
+            <Text style={styles.text}>{userDetails?.name || 'Guest'}</Text>
 
-            {/* Search Icon */}
-            <Icons name="search" size={30} color="black" style={styles.icon} />
+            {/* Urdu Word on the Right */}
+            <Text style={styles.logo}>آداب</Text>
         </View>
     );
 };
@@ -25,18 +24,29 @@ export default Avatar;
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row', // Align text and icon in a row
+        flexDirection: 'row', // Align items in a row
         alignItems: 'center', // Vertically align items
-        justifyContent: 'space-between', // Space between text and icon
-        padding: 10,
-        width: '100%', // Ensure it takes the full width
+        justifyContent: 'space-between', // Push items to both ends
+        paddingHorizontal: 15, // Horizontal padding for spacing
+        paddingVertical: 10, // Vertical padding
+        width: '100%', // Full width
+        borderWidth: 1, // Border thickness
+        borderColor: 'red', // Border color
+        borderRadius: 5, // Rounded corners
     },
     text: {
         fontSize: 18,
         fontWeight: 'bold',
-        textAlign: 'left', 
+        color: "white",
+        textAlign: 'left', // Align name to the left
     },
-    icon: {
-        marginLeft: 'auto', // Pushes the icon to the right
+    logo: {
+        color: 'red',
+        fontSize: 22, // Adjust font size
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(255, 0, 0, 0.6)',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 5,
+        textAlign: 'right', // Align text to the right
     },
 });

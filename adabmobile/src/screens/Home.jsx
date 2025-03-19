@@ -48,12 +48,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
     paddingTop: 60, // To prevent content from overlapping with the top bar
+    
   },
   topBar: {
     position: 'absolute',
     top: 0,
     width: '100%',
-    backgroundColor: '#fff', // Adjust background color if needed
+    backgroundColor: 'black', // Adjust background color if needed
     paddingVertical: 10,
     alignItems: 'center',
     elevation: 5, // Adds shadow effect on Android
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+
   },
   content: {
     flex: 1,

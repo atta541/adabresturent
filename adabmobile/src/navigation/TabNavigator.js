@@ -1,14 +1,14 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack'; // Import Stack Navigator
+import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../screens/Home';
 import Atta from '../screens/Atta';
 import ProfileStack from '../screens/ProfileStack/ProfileStack';
-import CategoryScreen from '../screens/CategoryScreen'; // Ensure this import exists
+import CategoryScreen from '../screens/CategoryScreen';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
-const HomeStack = createStackNavigator(); // Define HomeStack
+const HomeStack = createStackNavigator(); 
 
 
 const HomeNavigator = () => (
@@ -16,15 +16,15 @@ const HomeNavigator = () => (
     <HomeStack.Screen 
       name="Home" 
       component={Home} 
-      options={{ headerShown: false }} // Hide header on Home screen
+      options={{ headerShown: false }} 
     />
     <HomeStack.Screen 
       name="CategoryScreen" 
       component={CategoryScreen} 
       options={({ route }) => ({
         title: route.params.category,
-        headerStyle: { backgroundColor: 'black' }, // Black background
-        headerTintColor: 'white', // White text
+        headerStyle: { backgroundColor: 'black' },
+        headerTintColor: 'white', 
       })} 
     />
   </HomeStack.Navigator>
@@ -35,9 +35,9 @@ const TabNavigator = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       headerShown: false,
-      tabBarStyle: { backgroundColor: 'black', height: 80 }, // Increased height
-      tabBarActiveTintColor: 'red', // Active tab color changed to red
-      tabBarInactiveTintColor: 'gray', // Inactive tab color remains gray
+      tabBarStyle: { backgroundColor: 'black', height: 60 }, 
+      tabBarActiveTintColor: 'red', 
+      tabBarInactiveTintColor: 'gray', 
       tabBarIcon: ({ color, size, focused }) => {
         let iconName;
         if (route.name === 'Home') {
@@ -59,3 +59,6 @@ const TabNavigator = () => (
 );
 
 export default TabNavigator;
+
+
+

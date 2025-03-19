@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Base_URL from '../../Base_URL';
 
 export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     // Login Function
     const login = async (email, password) => {
         try {
-            const response = await fetch('http://10.0.2.2:5000/api/users/login', {
+            const response = await fetch(`${Base_URL}/api/users/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     // Register Function
     const register = async (name, email, password) => {
         try {
-            const response = await fetch('http://10.0.2.2:5000/api/users/register', {
+            const response = await fetch(`${Base_URL}:5000/api/users/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password }),

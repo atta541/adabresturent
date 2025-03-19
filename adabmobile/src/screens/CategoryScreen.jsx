@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import {
   View,
   Text,
@@ -9,60 +9,74 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+// Cache object to store API responses
+const apiCache = {};
+
 const CategoryScreen = ({ route }) => {
   const { category } = route.params;
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch(`http://10.0.2.2:5000/api/subItems/with-item-details?category=${category}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setItems(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching items:", error);
-        setLoading(false);
-      });
+  const fetchItems = useCallback(async () => {
+    if (apiCache[category]) {
+      setItems(apiCache[category]);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://192.168.1.4:5000/api/subItems/with-item-details?category=${category}`
+      );
+      const data = await response.json();
+      setItems(data);
+      apiCache[category] = data; 
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      setLoading(false);
+    }
   }, [category]);
 
-  // Function to handle "Add to Cart" button press
-  const handleAddToCart = (item) => {
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
+
+  const handleAddToCart = useCallback((item) => {
     console.log("Added to cart:", item.name);
-    // Add your logic here to handle adding the item to the cart
-  };
+  }, []);
+
+  const renderItem = useMemo(
+    () =>
+      ({ item }) =>
+        (
+          <View style={styles.item}>
+            <Image source={{ uri: item.picture }} style={styles.image} />
+            <View style={styles.details}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.description}>{item.description}</Text>
+              <Text style={styles.price}>Price: PKR {item.price.toFixed(2)}</Text>
+              <TouchableOpacity
+                style={styles.addToCartButton}
+                onPress={() => handleAddToCart(item)}
+              >
+                <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ),
+    [handleAddToCart]
+  );
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.header}>{category}</Text> */}
       {loading ? (
         <ActivityIndicator size="large" color="#FF5733" />
       ) : (
         <FlatList
           data={items}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <View style={styles.item}>
-              {/* Image on the left */}
-              <Image source={{ uri: item.picture }} style={styles.image} />
-
-              {/* Details on the right */}
-              <View style={styles.details}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-                <Text style={styles.price}>Price: PKR {item.price.toFixed(2)}</Text>
-
-                {/* Add to Cart Button */}
-                <TouchableOpacity
-                  style={styles.addToCartButton}
-                  onPress={() => handleAddToCart(item)}
-                >
-                  <Text style={styles.addToCartButtonText}>Add to Cart</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
+          renderItem={renderItem}
         />
       )}
     </View>
@@ -89,17 +103,17 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 10,
     borderRadius: 10,
-    flexDirection: "row", // Align items horizontally
-    alignItems: "center", // Center vertically
+    flexDirection: "row",
+    alignItems: "center",
   },
   image: {
     width: 100,
     height: 100,
     borderRadius: 10,
-    marginRight: 15, // Space between image and text
+    marginRight: 15,
   },
   details: {
-    flex: 1, // Take remaining space
+    flex: 1,
   },
   itemName: {
     color: "white",
@@ -128,7 +142,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
-
   },
 });
 

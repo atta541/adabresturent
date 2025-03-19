@@ -20,7 +20,6 @@ exports.createSubItem = async (req, res) => {
     }
 };
 
-// Get all sub-items for a specific item
 exports.getSubItemsByItemId = async (req, res) => {
     try {
         const { itemId } = req.params;
