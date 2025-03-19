@@ -1,72 +1,3 @@
-// const User = require('../models/user.model');
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const { validationResult } = require('express-validator');
-
-// // User Registration Function (Already Implemented)
-// const registerUser = async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return res.status(400).json({ errors: errors.array() });
-//     }
-
-//     const { name, email, password } = req.body;
-
-//     try {
-//         let user = await User.findOne({ email });
-
-//         if (user) {
-//             return res.status(400).json({ message: 'User already exists' });
-//         }
-
-//         const salt = await bcrypt.genSalt(10);
-//         const hashedPassword = await bcrypt.hash(password, salt);
-
-//         user = new User({ name, email, password: hashedPassword });
-//         await user.save();
-
-//         const token = jwt.sign({ id: user.id }, 'your_secret_key', { expiresIn: '1h' });
-
-//         res.status(201).json({ message: 'User registered successfully', token });
-//     } catch (error) {
-//         res.status(500).json({ message: 'Server error', error });
-//     }
-// };
-
-// // User Login Function
-// const loginUser = async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return res.status(400).json({ errors: errors.array() });
-//     }
-
-//     const { email, password } = req.body;
-
-//     try {
-//         const user = await User.findOne({ email });
-
-//         if (!user) {
-//             return res.status(400).json({ message: 'Invalid email or password' });
-//         }
-
-//         const isMatch = await bcrypt.compare(password, user.password);
-//         if (!isMatch) {
-//             return res.status(400).json({ message: 'Invalid email or password' });
-//         }
-
-//         const token = jwt.sign({ id: user.id }, 'your_secret_key', { expiresIn: '1h' });
-
-//         res.json({ message: 'User logged in successfully', token, user: { id: user.id, name: user.name, email: user.email } });
-//     } catch (error) {
-//         res.status(500).json({ message: 'Server error', error });
-//     }
-// };
-
-// module.exports = { registerUser, loginUser };
-
-
-
-
 const User = require('../../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -77,28 +8,43 @@ require('dotenv').config();
 
 const SECRET_KEY = 'your_secret_key';
 
+
 // User Registration
 const registerUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { name, email, password } = req.body;
+
+    const { name, email, password, phone, address } = req.body;
+
     try {
         let user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({ message: 'User already exists' });
         }
+
+        let phoneExists = await User.findOne({ phone });
+        if (phoneExists) {
+            return res.status(400).json({ message: 'Phone number already registered' });
+        }
+
+
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        user = new User({ name, email, password: hashedPassword });
+
+        user = new User({ name, email, password: hashedPassword, phone, address });
         await user.save();
+
         const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: '1h' });
+
         res.status(201).json({ message: 'User registered successfully', token });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
 
 // User Login
 const loginUser = async (req, res) => {
@@ -210,5 +156,8 @@ const sendResetEmail = async (email, token) => {
     };
     await transporter.sendMail(mailOptions);
 };
+
+
+
 
 module.exports = { registerUser, loginUser, forgotPassword, resetPassword, updateProfile,getUserProfile };

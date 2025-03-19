@@ -1,31 +1,44 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const Register = ({ navigation }) => {
+const Register = ({ navigation }) => { 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('03'); // Fixed "03"
+  const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const { register } = useContext(AuthContext);
 
   const handleRegister = async () => {
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword || !phone || !address) {
       Alert.alert('Error', 'All fields are required!');
+      return;
+    }
+    if (!/^03\d{9}$/.test(phone)) {
+      Alert.alert('Error', 'Phone number must start with 03 and have 11 digits!');
       return;
     }
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match!');
       return;
     }
+ 
     try {
-      await register(name, email, password);
-      Alert.alert('Success', 'Account created successfully!');
-      navigation.replace('Login');
+      const data = await register(name, email, password, phone, address);
+
+
+      if (data) {
+        Alert.alert('Success', 'Account created successfully! Please log in.');
+        navigation.replace('Login');
+      }
     } catch (error) {
       Alert.alert('Error', error.message || 'Something went wrong');
     }
   };
+
   return (
     <View style={styles.container}>
       {/* Logo Section */}
@@ -37,37 +50,79 @@ const Register = ({ navigation }) => {
 
       {/* Input Section */}
       <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your name"
-          placeholderTextColor="#999"
-          value={name}
-          onChangeText={setName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your email"
-          placeholderTextColor="#999"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your password"
-          placeholderTextColor="#999"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm your password"
-          placeholderTextColor="#999"
-          secureTextEntry
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-        />
+        <View style={styles.inputWrapper}>
+          <Ionicons name="person-outline" size={20} color="#FFF" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your name"
+            placeholderTextColor="#FFF"
+            value={name} 
+            onChangeText={setName}
+          />
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <Ionicons name="mail-outline" size={20} color="#FFF" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your email"
+            placeholderTextColor="#FFF"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <Ionicons name="call-outline" size={20} color="#FFF" style={styles.icon} />
+
+
+
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your phone number"
+            placeholderTextColor="#AAA" // Light gray for better contrast
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={(text) => setPhone(text.startsWith("03") ? text : phone)}
+          />
+
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <Ionicons name="location-outline" size={20} color="#FFF" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your address"
+            placeholderTextColor="#FFF"
+            value={address}
+            onChangeText={setAddress}
+          />
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <Ionicons name="lock-closed-outline" size={20} color="#FFF" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your password"
+            placeholderTextColor="#FFF"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+        </View>
+
+        <View style={styles.inputWrapper}>
+          <Ionicons name="lock-closed-outline" size={20} color="#FFF" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm your password"
+            placeholderTextColor="#FFF"
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+        </View>
       </View>
 
       {/* Button Section */}
@@ -97,7 +152,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 30,
   },
   logo: {
     color: 'red',
@@ -121,18 +176,23 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
   },
-  input: {
-    backgroundColor: '#FFF',
-    color: '#000',
-    padding: 15,
-    borderRadius: 15,
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
     marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FFF', // Underline Effect
+    color: 'white',
+  },
+  icon: {
+    marginRight: 10,
+  },
+  input: {
+    flex: 1,
+    color: '#FFF', // Black text
+    padding: 15,
     fontSize: 16,
-    shadowColor: '#FF0000',
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 4,
   },
   buttonContainer: {
     width: '100%',

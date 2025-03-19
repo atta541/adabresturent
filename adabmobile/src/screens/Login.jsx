@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'reac
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
+
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,6 +33,7 @@ const Login = ({ navigation }) => {
 
       {/* Input Section */}
       <View style={styles.inputContainer}>
+        
         <TextInput
           style={styles.input}
           placeholder="Enter your email"
@@ -39,6 +41,7 @@ const Login = ({ navigation }) => {
           keyboardType="email-address"
           onChangeText={setEmail}
           value={email}
+          
         />
         <TextInput
           style={styles.input}

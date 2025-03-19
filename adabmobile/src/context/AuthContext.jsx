@@ -45,24 +45,19 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Register Function
-    const register = async (name, email, password) => {
+    // Register Function (Modified)
+    const register = async (name, email, password, phone, address) => {
         try {
-            const response = await fetch(`${Base_URL}:5000/api/users/register`, {
+            const response = await fetch(`${Base_URL}/api/users/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, email, password, phone, address }),
             });
 
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Registration failed');
 
-            setUser(data.user);
-            setToken(data.token);
-
-            // Save user and token in AsyncStorage
-            await AsyncStorage.setItem('user', JSON.stringify(data.user));
-            await AsyncStorage.setItem('token', data.token);
+            return data;
         } catch (error) {
             throw error;
         }
