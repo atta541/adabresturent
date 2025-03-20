@@ -18,6 +18,9 @@ const itemsRoutes = require('./src/routes/items/items.route');
 const subitems = require('./src/routes/items/subitems.route');
 
 // Use Routes
+app.use('/atta', (req, res) => {
+    res.send('atta');
+});
 app.use('/api/users', userRoutes);
 app.use('/api/login', userRoutes);
 app.use('/api/items', itemsRoutes);
