@@ -9,7 +9,7 @@ AdabResturent is a restaurant management application currently under development
 - **Database:** MongoDB
 - **Directory Structure:**
   ```
-  E:\Reactnative\adabresturent\adabbackend\src
+  adabbackend\src
   ├── controllers  # Handles business logic and request processing
   ├── db           # Database configuration and connection
   ├── models       # Mongoose models defining database schemas
@@ -20,7 +20,7 @@ AdabResturent is a restaurant management application currently under development
 - **Framework:** React Native
 - **Directory Structure:**
   ```
-  E:\Reactnative\adabresturent\adabmobile\src
+  adabresturent\adabmobile\src
   ├── components   # Reusable UI components
   ├── context      # Context API for state management
   ├── navigation   # Navigation setup for the application
@@ -46,7 +46,7 @@ AdabResturent is a restaurant management application currently under development
 ### Backend
 1. Navigate to the backend directory:
    ```sh
-   cd E:\Reactnative\adabresturent\adabbackend
+   cd adabbackend
    ```
 2. Install dependencies:
    ```sh
@@ -79,8 +79,7 @@ This project is currently under development.
 - **Frontend:** React Native
 - **Authentication:** JWT, Email Verification
 
-## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request.
+
 
 ## License
 This project is licensed under the MIT License.
