@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Base_URL from '../../Base_URL';
 
 const ResetPassword = () => {
   const route = useRoute();
@@ -16,7 +17,7 @@ const ResetPassword = () => {
 
   const handleResetPassword = async () => {
     try {
-      const response = await fetch(`http://10.0.2.2:5000/api/reset-password`, {
+      const response = await fetch(`${Base_URL}/api/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

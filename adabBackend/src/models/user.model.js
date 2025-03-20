@@ -15,14 +15,19 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     phone: {
-        type: String,
+        type: String, 
         required: true,
     },
     address: {
         type: String,
         required: true,
     },
-    
+    isEmailVerified: {
+        type: Boolean,
+        default: false, 
+    },
+    emailVerificationCode: { type: String }, // OTP
+    emailVerificationExpires: { type: Date }, // Expiry time
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);

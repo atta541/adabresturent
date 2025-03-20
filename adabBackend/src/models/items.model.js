@@ -29,7 +29,7 @@ const ItemsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    category: {  // ✅ Ensure this field is included and required
+    category: { 
         type: String,
         required: true,
     },

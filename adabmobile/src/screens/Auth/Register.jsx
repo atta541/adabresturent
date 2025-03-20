@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Register = ({ navigation }) => { 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('03'); // Fixed "03"
+  const [phone, setPhone] = useState('03');
   const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -25,7 +25,7 @@ const Register = ({ navigation }) => {
       Alert.alert('Error', 'Passwords do not match!');
       return;
     }
- 
+   
     try {
       const data = await register(name, email, password, phone, address);
 

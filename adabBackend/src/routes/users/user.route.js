@@ -1,34 +1,3 @@
-// const express = require('express');
-// const { check } = require('express-validator');
-// const { registerUser, loginUser } = require('../../controllers/user.controller');
-
-// const router = express.Router();
-
-// // Register Route
-// router.post(
-//     '/register',
-//     [
-//         check('name', 'Name is required').not().isEmpty(),
-//         check('email', 'Please enter a valid email').isEmail(),
-//         check('password', 'Password must be at least 6 characters').isLength({ min: 6 })
-//     ],
-//     registerUser
-// );
-
-// // Login Route
-// router.post(
-//     '/login',
-//     [
-//         check('email', 'Please enter a valid email').isEmail(),
-//         check('password', 'Password is required').exists()
-//     ],
-//     loginUser
-// );
-
-// module.exports = router;
-
-
-
 const express = require('express');
 const { check } = require('express-validator');
 const {
@@ -37,7 +6,9 @@ const {
     forgotPassword,
     resetPassword,
     updateProfile,
-    getUserProfile
+    getUserProfile,
+    checkVerificationStatus,SendEmailVerification,
+    VerifyEmailOTP
 
 } = require('../../controllers/users/user.controller');
 const authMiddleware = require('./authMiddleware');
@@ -99,6 +70,14 @@ router.put(
     ],
     updateProfile
 );
+
+
+// Email Verification Routes
+router.get('/check-verification', authMiddleware, checkVerificationStatus);
+router.post('/send-verification', authMiddleware, SendEmailVerification);
+router.post('/verify-emailotp', authMiddleware, VerifyEmailOTP);
+ 
+
 
 
 module.exports = router;

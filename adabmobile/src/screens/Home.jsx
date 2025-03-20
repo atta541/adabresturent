@@ -28,7 +28,6 @@ const Home = ({ navigation }) => {
       <View style={styles.content}>
         <Text style={styles.title}>Welcome to Adab </Text>
 
-
         <Button title="Go to Atta" onPress={() => navigation.navigate('Atta')} />
 
         <View style={styles.logoutButton}>
@@ -47,17 +46,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-    paddingTop: 60, // To prevent content from overlapping with the top bar
+    paddingTop: 60, 
     
   },
   topBar: {
     position: 'absolute',
     top: 0,
     width: '100%',
-    backgroundColor: 'black', // Adjust background color if needed
+    backgroundColor: 'black',
     paddingVertical: 10,
     alignItems: 'center',
-    elevation: 5, // Adds shadow effect on Android
+    elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
