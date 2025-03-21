@@ -11,3 +11,4 @@ ios/Pods
 # Logs
 *.log
  
+.vercel

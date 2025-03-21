@@ -16,6 +16,7 @@ connectDB();
 const userRoutes = require('./src/routes/users/user.route');
 const itemsRoutes = require('./src/routes/items/items.route');
 const subitems = require('./src/routes/items/subitems.route');
+const cartRoutes = require('./src/routes/cart/cart.route');
 
 // Use Routes
 app.get('/atta', (req, res) => {
@@ -26,6 +27,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/login', userRoutes);
 app.use('/api/items', itemsRoutes);
 app.use('/api/subitems', subitems);
+app.use('/api/cart', cartRoutes);
 
 // Start Server
 app.listen(PORT, () => {

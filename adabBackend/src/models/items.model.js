@@ -1,23 +1,3 @@
-// const mongoose = require('mongoose');
-
-// const ItemsSchema = new mongoose.Schema({
-//     name: {
-//         type: String,
-//         required: true,
-//     },
-//     picture: {
-//         type: String,
-//         required: true,
-//         unique: true,
-//     },
-   
-// }, { timestamps: true });
-
-// module.exports = mongoose.model('Items', ItemsSchema);
-
-
-
-
 const mongoose = require('mongoose');
 
 const ItemsSchema = new mongoose.Schema({
@@ -29,7 +9,7 @@ const ItemsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    category: { 
+    category: {  
         type: String,
         required: true,
     },

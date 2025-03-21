@@ -38,10 +38,6 @@ router.post(
 
 router.get('/me', authMiddleware, getUserProfile);
 
-
-
-
-
 // Forgot Password Route
 router.post(
     '/forgot-password',
